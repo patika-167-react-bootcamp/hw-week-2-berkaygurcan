@@ -3,24 +3,24 @@
 const customerList = [ {
     //test datas
         name: "Berkay",
-        balance: 12000,
+        balance: 100,
         id: 1
     },
     {
         name: "Fuat",
-        balance: 400,
-        id: 2
+        balance: 30,
+        id: 6
     },
     {
         name: "Utku",
-        balance: 9000,
-        id: 3
+        balance: 60,
+        id: 7
     }
 ]
 
-//init
+//initalize application
 const selectSender = document.getElementById("sender")
-const recipientSender = document.getElementById("recipient")
+const selectRecipient = document.getElementById("recipient")
 
 renderCustomerList()
 renderSenderOption()
@@ -49,12 +49,13 @@ function renderSenderOption () {
     customerList.forEach(function(customer) { //döngü içerimizde li elementlerimizi oluşturalım
         const newOptionSender = document.createElement("option")
         newOptionSender.innerText = `${customer.name}`
+        newOptionSender.setAttribute('data-id',customer.id)
         selectSender.appendChild(newOptionSender);  //tek bir elementi 2elemente atayamıyor muyuz
     })
 }
 
 function renderRecipientOption (exceptCustomerName) {
-    recipientSender.innerHTML = ""; //içini boşalttık
+    selectRecipient.innerHTML = ""; //içini boşalttık
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
 
@@ -62,7 +63,8 @@ function renderRecipientOption (exceptCustomerName) {
         if(customer.name !== exceptCustomerName) { //diğer listeden seçili değerimiz bu listede gözükmesin
             const newOptionRecipient = document.createElement("option")
             newOptionRecipient.innerText = `${customer.name}`
-            recipientSender.appendChild(newOptionRecipient);  //tek bir elementi 2elemente atayamıyor muyuz
+            newOptionRecipient.setAttribute('data-id',customer.id)
+            selectRecipient.appendChild(newOptionRecipient);  //tek bir elementi 2elemente atayamıyor muyuz
         }
         
     })
@@ -71,10 +73,10 @@ function renderRecipientOption (exceptCustomerName) {
 //select işleminde değişiklik olunca çalışır.
 selectSender.addEventListener('change', (event) => {
     console.log(event.target.value);
-    renderRecipientOption(event.target.value)
+    renderRecipientOption(event.target.value) //alıcı dropdown da gönderici olmayacak
 })
 
-recipientSender.addEventListener('change', (event) => {
+selectRecipient.addEventListener('change', (event) => {
     console.log(event.target.value);
 })
 
@@ -91,7 +93,43 @@ function renderCustomerList() {
     })
 }
 
+function renderHistoryList(sender,recipient,amount) {
+    //tamamlanan işlemler bu fonksiyon yardımı ile render edilir.
+
+    const mainLu = document.getElementById("historyList")
+    const newli = document.createElement("li")
+    newli.innerText = `${sender} has sent ${amount} to ${recipient}`
+    mainLu.appendChild(newli)
+
+
+}
+
 function sendMoney() {
-    console.log("para gönderilme func calıştı")
     //@todo - para gönderme işlemi ile birlikte customerlist ve history list güncelleştirmeleri yapılacak
+    //ilk olarak gönderici - alıcı müşterilerine ulaşmamız gerekir
+
+    //getAttribute ile id değerini çekiyoruz ama gelen değer string int bir değere çevirip karşılaştırma yapacağız.
+    const senderId = parseInt(selectSender.selectedOptions[0].getAttribute("data-id"))
+    const recipientId = parseInt(selectRecipient.selectedOptions[0].getAttribute("data-id"))
+    //id değerleri ile birlikte ilgili müşteri objesine ulaşalım
+    const senderCustomer = customerList.find((customer) => customer.id === senderId)
+    const recipientCustomer = customerList.find((customer) => customer.id === recipientId)
+    
+    const amount = parseInt(document.getElementById("amount").value)
+
+    if(amount) {
+        //bakiye girildiyse işlemi gerçekleştirelim
+        //gönderen ve alan müşterilerin bakiyelerini hesaplayalım
+        senderCustomer.balance -= amount
+        recipientCustomer.balance += amount
+
+        console.log(customerList)
+        console.log("Para gönderme işlemi başarılı")
+        renderHistoryList(senderCustomer.name, recipientCustomer.name, amount)
+
+    } else {
+        console.log("Gönderilecek miktarı giriniz")
+        
+    }
+    //@todo bakiye yetersiz durumu
 }
