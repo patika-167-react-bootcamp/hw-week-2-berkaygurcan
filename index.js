@@ -22,14 +22,17 @@ const customerList = [ {
 const selectSender = document.getElementById("sender")
 const selectRecipient = document.getElementById("recipient")
 
+//init renders
 renderCustomerList()
 renderSenderOption()
 renderRecipientOption()
 
 
-function addCustomer() {
-    const customerName = document.getElementById("newCustomerName").value
+function addCustomer() { 
+    //inputlardaki değerleri alalım
+    const customerName = document.getElementById("newCustomerName").value 
     const customerBalance = document.getElementById("newCustomerBalance").value
+    //değerleri customer listesine ekleyelim
     customerList.push({
         id: Math.floor(Math.random() * 100), //id oluşturduk
         name: customerName,
@@ -37,8 +40,10 @@ function addCustomer() {
     })
    
      console.log(customerList)
-     renderCustomerList() //render edecek func
-     renderSenderOption() // optionslarımızı render edecek func
+     renderCustomerList() //customer listesini render edecek func
+     // optionslarımızı render edecek fonksiyonlar
+     renderSenderOption() 
+     renderRecipientOption()
 }
 
 function renderSenderOption () {
@@ -46,7 +51,7 @@ function renderSenderOption () {
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
 
-    customerList.forEach(function(customer) { //döngü içerimizde li elementlerimizi oluşturalım
+    customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
         const newOptionSender = document.createElement("option")
         newOptionSender.innerText = `${customer.name}`
         newOptionSender.setAttribute('data-id',customer.id)
@@ -59,12 +64,12 @@ function renderRecipientOption (exceptCustomerName) {
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
 
-    customerList.forEach(function(customer) { //döngü içerimizde li elementlerimizi oluşturalım
+    customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
         if(customer.name !== exceptCustomerName) { //diğer listeden seçili değerimiz bu listede gözükmesin
             const newOptionRecipient = document.createElement("option")
             newOptionRecipient.innerText = `${customer.name}`
             newOptionRecipient.setAttribute('data-id',customer.id)
-            selectRecipient.appendChild(newOptionRecipient);  //tek bir elementi 2elemente atayamıyor muyuz
+            selectRecipient.appendChild(newOptionRecipient);  
         }
         
     })
@@ -72,24 +77,20 @@ function renderRecipientOption (exceptCustomerName) {
 
 //select işleminde değişiklik olunca çalışır.
 selectSender.addEventListener('change', (event) => {
-    console.log(event.target.value);
     renderRecipientOption(event.target.value) //alıcı dropdown da gönderici olmayacak
 })
 
-selectRecipient.addEventListener('change', (event) => {
-    console.log(event.target.value);
-})
 
 
-function renderCustomerList() {
+function renderCustomerList() { //bu fonkisyon ile birlikte müşteri ve bakiyeleri render edeceğiz.
     //ul listemizi alalım
     const mainLu = document.getElementById("customersBalanceList")
     mainLu.innerHTML = "" // içini boşaltıyoruz listemizi güncellemeden
 
-    customerList.forEach(function(customer) { //döngü içerimizde li elementlerimizi oluşturalım
+    customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
         const newLi = document.createElement("li")
         newLi.innerText = `${customer.name} --- ${customer.balance}`
-        mainLu.appendChild(newLi);
+        mainLu.appendChild(newLi); //listemizi li elementini ekleyelim
     })
 }
 
@@ -126,7 +127,7 @@ function sendMoney() {
         console.log(customerList)
         console.log("Para gönderme işlemi başarılı")
         renderHistoryList(senderCustomer.name, recipientCustomer.name, amount)
-        renderCustomerList()
+        renderCustomerList() // müşteri bakiyelerini ui kısmında güncelleyelim
     } else {
         console.log("Gönderilecek miktarı giriniz")
         
