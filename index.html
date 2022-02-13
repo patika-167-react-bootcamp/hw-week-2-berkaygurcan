@@ -5,18 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Odev 2</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
 
-    <div class="input-group">
-        <input type="text" id="newCustomerName" placeholder="Ad" />
-        <input type="text" id="newCustomerBalance" placeholder="Balance" />
-        <button onclick='addCustomer()'> Ekle</button>
+    <div class="left-div">
+        <div class="input-group">
+            <input type="text" id="newCustomerName" placeholder="Ad" /> </br>
+            <input type="text" id="newCustomerBalance" placeholder="Balance" />
+            <button onclick='addCustomer()'> Ekle</button>
+        </div>
+        </br>
+        <div>
+            <ul id="customersBalanceList">
+            </ul>
+        </div>
+        
     </div>
-    </br>
 
-    <ul id="customersBalanceList">
-    </ul>
+    <div class="right-div">
+        <div class="process-div">
+            <div>
+              <label for="sender">Gönderen Seçimi</label>
+              <select id="sender">
+            </select>
+            </div>
+
+            <div>
+              <label for="recipient">Alıcı Seçimi</label>
+              <select id="recipient">
+            </select>
+            </div>
+
+            <div>
+                <input type="text" id="amount">
+                <button onclick="sendMoney()"> Gönder </button>
+            </div>
+        </div>
+
+        <div>
+            <!-- text area da olabilir. -->
+            <ul id="historyList">
+            </ul>
+        </div>
+    </div>
+    
 
     <script src="index.js"></script>
 </body>
