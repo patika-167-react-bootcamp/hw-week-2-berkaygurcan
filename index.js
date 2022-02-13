@@ -126,7 +126,7 @@ function sendMoney() {
         console.log(customerList)
         console.log("Para gönderme işlemi başarılı")
         renderHistoryList(senderCustomer.name, recipientCustomer.name, amount)
-
+        renderCustomerList()
     } else {
         console.log("Gönderilecek miktarı giriniz")
         
