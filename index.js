@@ -1,38 +1,20 @@
 //ilk olarak input değerlerini alalım
 
-const customerList = [ {
-    //test datas
-        name: "Berkay",
-        balance: 100,
-        id: 1
-    },
-    {
-        name: "Fuat",
-        balance: 30,
-        id: 6
-    },
-    {
-        name: "Utku",
-        balance: 60,
-        id: 7
-    }
-]
+const customerList = []
 
 //initalize application
 const selectSender = document.getElementById("sender")
 const selectRecipient = document.getElementById("recipient")
 
-//init renders
-renderCustomerList()
-renderSenderOption()
-renderRecipientOption()
-
-
 function addCustomer() { 
     //inputlardaki değerleri alalım
     const customerName = document.getElementById("newCustomerName").value 
     const customerBalance = document.getElementById("newCustomerBalance").value
-    
+
+    if(!customerName || !customerBalance) { //alanlar girilmemiş ise
+        console.log("Lütfen alanları doldurun")
+        return false
+    }
     //değerleri customer listesine ekleyelim
     customerList.push({
         id: Math.floor(Math.random() * 100), //id oluşturduk
@@ -134,7 +116,6 @@ function sendMoney() {
             return false
         }  
         
-
         
         console.log("Para gönderme işlemi başarılı")
         renderHistoryList(senderCustomer.name, recipientCustomer.name, amount)
