@@ -19,9 +19,10 @@ function addCustomer() {
     customerList.push({
         id: Math.floor(Math.random() * 100), //id oluşturduk
         name: customerName,
-        balance: customerBalance,
+        balance: parseInt(customerBalance), //string yerine integer olarak yerleştirdik.Üzerinde sayısal işlem yapacağız
     })
    
+    
      console.log(customerList)
      renderCustomerList() //customer listesini render edecek func
      // optionslarımızı render edecek fonksiyonlar
@@ -72,6 +73,7 @@ function renderCustomerList() { //bu fonkisyon ile birlikte müşteri ve bakiyel
 
     customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
         const newLi = document.createElement("li")
+        newLi.className = "list-group-item"
         newLi.innerText = `${customer.name} --- ${customer.balance}`
         mainLu.appendChild(newLi); //listemizi li elementini ekleyelim
     })
@@ -82,6 +84,7 @@ function renderHistoryList(sender,recipient,amount) {
 
     const mainLu = document.getElementById("historyList")
     const newli = document.createElement("li")
+    newli.className = "list-group-item"
     newli.innerText = `${sender} has sent ${amount} to ${recipient}`
     mainLu.appendChild(newli)
 
@@ -107,12 +110,15 @@ function sendMoney() {
             console.log("Pozitif bir bakiye giriniz")
             return false
         } 
-        else if (amount > 0 && senderCustomer.balance - amount > 0 ) {
+        else if (amount > 0 && senderCustomer.balance - amount >= 0 ) {
             //gönderen ve alan müşterilerin bakiyelerini hesaplayalım
+            console.log(typeof(senderCustomer.balance))
+            console.log(typeof(recipientCustomer.balance))
             senderCustomer.balance -= amount
             recipientCustomer.balance += amount
         } else {
-            console.log("Yetersiz bakiye")
+            
+           
             return false
         }  
         

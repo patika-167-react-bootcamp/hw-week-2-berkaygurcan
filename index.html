@@ -11,62 +11,101 @@
     
 </head>
 <body>
+    <div class="container mt-4">
 
-    
-    <div class="left-div">
-        <div class="input-group">
-            <input type="text" id="newCustomerName" placeholder="Ad" /> 
-            <input type="number" id="newCustomerBalance" placeholder="Balance" />
-            <button onclick='addCustomer()'> Ekle</button>
+        <div class="row">
+            <!-- Add customer card -->
+            <div class="col-4 left-div">
+                <div class="card">
+                    <div class="card-header">
+                       Add Customer
+                      </div>
+                    <div class="card-body m-2">
+                        <div class="row" >
+                            <input type="text" id="newCustomerName" placeholder="İsim" /> 
+                        </div>
+                        <div class="row mt-2">
+                            <input type="number" id="newCustomerBalance" placeholder="Balance" />
+                            <button  class="btn btn-dark btn-sm ml-3" onclick='addCustomer()'> Ekle</button>
+                        </div>
+                    </div>
+                  </div>
+  
+            </div>
+
+            <div class="col-8 right-div">
+                <!-- Money transfar card -->
+                <div class="card">
+                    <div class="card-header">
+                        Money Transfer
+                    </div>
+                    <div class="card-body">
+                        <div class="row process-div justify-content-around aling-items-center">
+                            <div>
+                              <label for="sender">Gönderen Seçimi</label>
+                              <select id="sender">
+                                <option selected>Gönderen</option>
+                                
+                            </select>
+                            </div>
+                
+                            <div>
+                              <label for="recipient">Alıcı Seçimi</label>
+                              <select id="recipient">
+                                <option selected>Alıcı</option>
+                            </select>
+                            </div>
+                
+                            <div>
+                                <input type="text" id="amount">
+                                <button  class="btn btn-dark btn-sm mb-1" onclick="sendMoney()"> Gönder </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div>
-            <ul id="customersBalanceList">
-            </ul>
+
+        <div class="row mt-4">
+            <div class="col-4">
+                <!-- Customer Balance List-->
+                <div class="card">
+                    <div class="card-header">
+                        Customer Balance List
+                      </div>
+                    <ul class="list-group list-group-flush" id="customersBalanceList">
+                        <li class="list-group-item">deneme</li>
+                        <li class="list-group-item">deneme</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-8">
+                <!-- History List-->
+                <div class="card">
+                    <div class="card-header">
+                        History
+                      </div>
+                    <ul class="list-group list-group-flush" id="historyList">
+                        <li class="list-group-item">deneme</li>
+                        <li class="list-group-item">deneme</li>
+                    </ul>
+                    
+                </div>
+                
+            </div>
         </div>
-        
     </div>
-
-    <div class="right-div">
-        <div class="process-div">
-            <div>
-              <label for="sender">Gönderen Seçimi</label>
-              <select id="sender">
-                <option selected>Gönderen</option>
-                
-                
-            </select>
-            </div>
-
-            <div>
-              <label for="recipient">Alıcı Seçimi</label>
-              <select id="recipient">
-                <option selected>Alıcı</option>
-                
-            
-            </select>
-            </div>
-
-            <div>
-                <input type="text" id="amount">
-                <button onclick="sendMoney()"> Gönder </button>
-            </div>
-        </div>
-
-        <div>
-            <!-- text area da olabilir. -->
-            <ul id="historyList">
-                
-            </ul>
-        </div>
-    </div>
     
-    <script src="index.js"></script>
+    
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     
+    <script src="index.js"></script>
 </body>
 </html>
