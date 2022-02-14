@@ -32,6 +32,7 @@ function addCustomer() {
     //inputlardaki değerleri alalım
     const customerName = document.getElementById("newCustomerName").value 
     const customerBalance = document.getElementById("newCustomerBalance").value
+    
     //değerleri customer listesine ekleyelim
     customerList.push({
         id: Math.floor(Math.random() * 100), //id oluşturduk
@@ -106,7 +107,7 @@ function renderHistoryList(sender,recipient,amount) {
 }
 
 function sendMoney() {
-    //@todo - para gönderme işlemi ile birlikte customerlist ve history list güncelleştirmeleri yapılacak
+    //@todo - bu fonksiyon parçalanabilir
     //ilk olarak gönderici - alıcı müşterilerine ulaşmamız gerekir
 
     //getAttribute ile id değerini çekiyoruz ama gelen değer string int bir değere çevirip karşılaştırma yapacağız.
@@ -120,17 +121,26 @@ function sendMoney() {
 
     if(amount) {
         //bakiye girildiyse işlemi gerçekleştirelim
-        //gönderen ve alan müşterilerin bakiyelerini hesaplayalım
-        senderCustomer.balance -= amount
-        recipientCustomer.balance += amount
+        if (amount < 0) {
+            console.log("Pozitif bir bakiye giriniz")
+            return false
+        } 
+        else if (amount > 0 && senderCustomer.balance - amount > 0 ) {
+            //gönderen ve alan müşterilerin bakiyelerini hesaplayalım
+            senderCustomer.balance -= amount
+            recipientCustomer.balance += amount
+        } else {
+            console.log("Yetersiz bakiye")
+            return false
+        }  
+        
 
-        console.log(customerList)
+        
         console.log("Para gönderme işlemi başarılı")
         renderHistoryList(senderCustomer.name, recipientCustomer.name, amount)
         renderCustomerList() // müşteri bakiyelerini ui kısmında güncelleyelim
     } else {
         console.log("Gönderilecek miktarı giriniz")
-        
     }
     //@todo bakiye yetersiz durumu
 }
