@@ -5,9 +5,14 @@ const customerList = []
 //initalize application
 const selectSender = document.getElementById("sender")
 const selectRecipient = document.getElementById("recipient")
+const customerNameInput = document.getElementById("newCustomerName") 
+const customerBalance = document.getElementById("newCustomerBalance") 
+const amountInput = document.getElementById("amount") 
+
 
 function addCustomer() { 
     //inputlardaki değerleri alalım
+    
     const customerName = document.getElementById("newCustomerName").value 
     const customerBalance = document.getElementById("newCustomerBalance").value
 
@@ -22,12 +27,18 @@ function addCustomer() {
         balance: parseInt(customerBalance), //string yerine integer olarak yerleştirdik.Üzerinde sayısal işlem yapacağız
     })
    
-    
-     console.log(customerList)
+    //render fonksiyonlarının çağrılması
      renderCustomerList() //customer listesini render edecek func
      // optionslarımızı render edecek fonksiyonlar
      renderSenderOption() 
      renderRecipientOption()
+     renderCustomerForHistory(customerName) // kullanıcı eklendiğinde history kısmını güncellemeye yarayan render fonksiyonu
+     
+     console.log("kullanıcı başarılı şekilde eklendi")
+     //inputların içlerini boşaltalım
+     customerNameInput.value = ""
+     newCustomerBalance.value = ""
+    
 }
 
 function renderSenderOption () {
@@ -47,12 +58,11 @@ function renderRecipientOption (exceptCustomerName) {
     selectRecipient.innerHTML = ""; //içini boşalttık
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
-
     customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
         if(customer.name !== exceptCustomerName) { //diğer listeden seçili değerimiz bu listede gözükmesin
             const newOptionRecipient = document.createElement("option")
             newOptionRecipient.innerText = `${customer.name}`
-            newOptionRecipient.setAttribute('data-id',customer.id)
+            newOptionRecipient.setAttribute('data-id',customer.id) //id değerini korumak ve sonradan erişmek için data-id olarak elemente ekliyoruz
             selectRecipient.appendChild(newOptionRecipient);  
         }
         
@@ -72,10 +82,17 @@ function renderCustomerList() { //bu fonkisyon ile birlikte müşteri ve bakiyel
     mainLu.innerHTML = "" // içini boşaltıyoruz listemizi güncellemeden
 
     customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
-        const newLi = document.createElement("li")
-        newLi.className = "list-group-item"
-        newLi.innerText = `${customer.name} --- ${customer.balance}`
-        mainLu.appendChild(newLi); //listemizi li elementini ekleyelim
+        //listemize ekleme yaparken div ve span olarak datayı ayırıp daha güzel şekilde gösterelim
+        const newLi = document.createElement("li"); 
+        newLi.className = "list-group-item d-flex justify-content-between align-items-start"; //hizalama işlemleri için
+        const nameDiv = document.createElement("div");
+        nameDiv.innerText = customer.name;
+        const balanceSpan = document.createElement("span");
+        balanceSpan.innerText = customer.balance
+        newLi.appendChild(nameDiv);          
+        newLi.appendChild(balanceSpan);
+        mainLu.appendChild(newLi)
+        
     })
 }
 
@@ -85,16 +102,23 @@ function renderHistoryList(sender,recipient,amount) {
     const mainLu = document.getElementById("historyList")
     const newli = document.createElement("li")
     newli.className = "list-group-item"
-    newli.innerText = `${sender} has sent ${amount} to ${recipient}`
+    newli.innerText = `${sender} müşterisi ${recipient} müşterisine ${amount} tl gönderdi `
     mainLu.appendChild(newli)
+}
 
+function renderCustomerForHistory(customerName) { //eklenen kullanıcıyı history de sergilemek için
+
+    const mainLu = document.getElementById("historyList")
+    const newli = document.createElement("li")
+    newli.className = "list-group-item"
+    newli.innerText = `${customerName} müşterisi sistemde oluşturuldu.`
+    mainLu.appendChild(newli)
 
 }
 
 function sendMoney() {
     //@todo - bu fonksiyon parçalanabilir
     //ilk olarak gönderici - alıcı müşterilerine ulaşmamız gerekir
-
     //getAttribute ile id değerini çekiyoruz ama gelen değer string int bir değere çevirip karşılaştırma yapacağız.
     const senderId = parseInt(selectSender.selectedOptions[0].getAttribute("data-id"))
     const recipientId = parseInt(selectRecipient.selectedOptions[0].getAttribute("data-id"))
@@ -104,30 +128,28 @@ function sendMoney() {
     
     const amount = parseInt(document.getElementById("amount").value)
 
-    if(amount) {
-        //bakiye girildiyse işlemi gerçekleştirelim
+    if(amount && senderCustomer && recipientCustomer) {//bakiye girildiyse işlemi gerçekleştirelim
         if (amount < 0) {
             console.log("Pozitif bir bakiye giriniz")
             return false
         } 
         else if (amount > 0 && senderCustomer.balance - amount >= 0 ) {
             //gönderen ve alan müşterilerin bakiyelerini hesaplayalım
-            console.log(typeof(senderCustomer.balance))
-            console.log(typeof(recipientCustomer.balance))
             senderCustomer.balance -= amount
             recipientCustomer.balance += amount
         } else {
-            
-           
+            console.log("yetersiz bakiye")
             return false
         }  
-        
-        
+    
         console.log("Para gönderme işlemi başarılı")
-        renderHistoryList(senderCustomer.name, recipientCustomer.name, amount)
+        amountInput.value = ""
+        renderHistoryList(senderCustomer.name, recipientCustomer.name, amount) //history listemizi render edecek func
         renderCustomerList() // müşteri bakiyelerini ui kısmında güncelleyelim
     } else {
-        console.log("Gönderilecek miktarı giriniz")
+        console.log("Gönderilecek miktarı giriniz / Gönderici-Alıcı müşterileri seçiniz")
     }
-    //@todo bakiye yetersiz durumu
+
+ 
+    
 }
