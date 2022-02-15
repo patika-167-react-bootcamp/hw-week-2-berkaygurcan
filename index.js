@@ -90,7 +90,7 @@ function renderCustomerList() { //bu fonkisyon ile birlikte müşteri ve bakiyel
         const nameDiv = document.createElement("div");
         nameDiv.innerText = customer.name;
         const balanceSpan = document.createElement("span");
-        balanceSpan.innerText = customer.balance
+        balanceSpan.innerText = customer.balance + "tl"
 
         //silme işlemi sil butonu oluşturmamız ve  eklememiz gerekli
         const newButton = document.createElement("button"); 
@@ -149,7 +149,6 @@ function renderHistoryList() {
 
         
     })
-
     
 }
 
