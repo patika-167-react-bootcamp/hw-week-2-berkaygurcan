@@ -32,9 +32,16 @@ function addCustomer() {
      // optionslarımızı render edecek fonksiyonlar
      renderSenderOption() 
      renderRecipientOption()
-     renderCustomerForHistory(customerName) // kullanıcı eklendiğinde history kısmını güncellemeye yarayan render fonksiyonu
+    // renderCustomerForHistory(customerName) // kullanıcı eklendiğinde history kısmını güncellemeye yarayan render fonksiyonu --
+    //deneme
+    moneyTransferHistory.push({
+        customerName: customerName,
+        type: "add",
+        text: `${customerName} müşterisi sistemde oluşturuldu.`
+    })
      
      console.log("kullanıcı başarılı şekilde eklendi")
+     renderHistoryList()
      //inputların içlerini boşaltalım
      customerNameInput.value = ""
      newCustomerBalance.value = ""
@@ -130,37 +137,42 @@ function renderHistoryList() {
     //tamamlanan işlemler bu fonksiyon yardımı ile render edilir.
     const mainLu = document.getElementById("historyList")
     mainLu.innerHTML = ""
-    
+
     moneyTransferHistory.forEach(function(history) {
-        const {senderCustomer, recipientCustomer, date, amount, id} = history
+        const {type} = history
         //li elementlerinin oluşturulması
-        const newli = document.createElement("li")
+        
+        if(type === "transfer") {
 
-        const newButton = document.createElement("button");
-        newButton.innerText = "Geri Al"
-        newButton.className = "btn btn-danger btn-sm mb-1" // boostrap üzerinden class verdik
-        newButton.addEventListener('click', transferHistoryDelete)
+            const {senderCustomer, recipientCustomer, date, amount, id } = history
+            const newli = document.createElement("li")
+            const newButton = document.createElement("button");
+            newButton.innerText = "Geri Al"
+            newButton.className = "btn btn-danger btn-sm mb-1" // boostrap üzerinden class verdik
+            newButton.addEventListener('click', transferHistoryDelete)
 
-        newli.className = "list-group-item"
-        newli.innerText = `${senderCustomer.name} müşterisi ${recipientCustomer.name} müşterisine ${date} tarihinde ${amount} tl gönderdi `
-        newli.setAttribute('data-id',id) //moneyTransferHistory ilgili data'nın takip edilebilmesi için id gömdük 
-        newli.appendChild(newButton)
-        mainLu.appendChild(newli)
+            newli.className = "list-group-item"
+            newli.innerText = `${senderCustomer.name} müşterisi ${recipientCustomer.name} müşterisine ${date} tarihinde ${amount} tl gönderdi  `
+            newli.setAttribute('data-id',id) //moneyTransferHistory ilgili data'nın takip edilebilmesi için id gömdük 
+            newli.appendChild(newButton)
+            mainLu.appendChild(newli)
+
+        } else if (type ==="add") {
+            const { customerName} = history
+            const newli = document.createElement("li")
+            newli.className = "list-group-item"
+            newli.innerText = `${customerName} müşterisi sistemde oluşturuldu.`
+            mainLu.appendChild(newli)
+            
+        }
+        
 
         
     })
     
 }
 
-function renderCustomerForHistory(customerName) { //eklenen kullanıcıyı history de sergilemek için
 
-    const mainLu = document.getElementById("historyList")
-    const newli = document.createElement("li")
-    newli.className = "list-group-item"
-    newli.innerText = `${customerName} müşterisi sistemde oluşturuldu.`
-    mainLu.appendChild(newli)
-
-}
 
 function transferHistoryDelete(e) {
 
@@ -186,6 +198,8 @@ function transferHistoryDelete(e) {
         revokeTransaction(deletedHistory) //silinen öğemizi gönderdik
         console.log("işlem geri alındı")
     }
+
+
     
 }
 
@@ -247,11 +261,14 @@ function sendMoney() {
             senderCustomer,
             recipientCustomer,
             amount,
-            date
+            date,
+            type: "transfer",
+            
+            
         })
        
         renderHistoryList() //state üzerinde değişiklik oldu , render fonksiyonumuzu çalıştırırız
         
     }
-    
+    //obje içerisine html yazabilirsin! li leri öyle cagırabilirsin
 }
