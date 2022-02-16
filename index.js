@@ -176,7 +176,7 @@ function transferHistoryDelete(e) {
     const senderIsExists = customerList.some((customer) => customer.id === senderCustomer.id)
     const recipientIsExists = customerList.some((customer) => customer.id === recipientCustomer.id)
     
-    if(senderIsExists || recipientIsExists) { //müşterilerden biri yoksa bu işlem artık gerçekleşmez
+    if(!senderIsExists || !recipientIsExists) { //müşterilerden biri yoksa bu işlem artık gerçekleşmez
         console.log("bu işlemi yapan kullanıcı artık mevcut olmadığı için geri alınamaz")
     }else {
         let deletedHistory =moneyTransferHistory.splice(index,1)
