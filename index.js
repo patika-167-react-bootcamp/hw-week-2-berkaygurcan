@@ -1,13 +1,16 @@
 //ilk olarak input değerlerini alalım
 
 const customerList = []
-const moneyTransferHistory= []
+let moneyTransferHistory= []
+let copiedmoneyTransferHistory = []
 //initalize application
 const selectSender = document.getElementById("sender")
 const selectRecipient = document.getElementById("recipient")
+const selectFilter = document.getElementById("filter")
 const customerNameInput = document.getElementById("newCustomerName") 
 const customerBalance = document.getElementById("newCustomerBalance") 
-const amountInput = document.getElementById("amount") 
+const amountInput = document.getElementById("amount")
+const filterTextInput = document.getElementById("filterText")
 
 
 function addCustomer() { 
@@ -32,8 +35,8 @@ function addCustomer() {
      // optionslarımızı render edecek fonksiyonlar
      renderSenderOption() 
      renderRecipientOption()
-    // renderCustomerForHistory(customerName) // kullanıcı eklendiğinde history kısmını güncellemeye yarayan render fonksiyonu --
-    //deneme
+    
+    
     moneyTransferHistory.push({
         customerName: customerName,
         type: "add",
@@ -123,13 +126,23 @@ function customerDelete(e) {
     const customerId = parseInt(targetLi.getAttribute("data-id"))
     //şimdi customerList içerisinden ilgili id değeri ile eşleşen kaydı silmemiz gerekli
     const index = customerList.findIndex(customer => customer.id === customerId);
-    customerList.splice(index,1)
+    
+    const deletedCustomer = customerList.splice(index,1)
+    console.log(deletedCustomer)
+
+    //history listemizde yazmak için durumu ekleyelim
+    moneyTransferHistory.push({
+        customerName: deletedCustomer.name,
+        type: "delete",
+        text: `${deletedCustomer.name} müşterisi sistemden silindi.`
+    })
    
     //silme işleminden sonra müşteri listemizi tekrar render edelim(ui için)
     renderCustomerList() 
     //optionları tekrar render edelim
     renderSenderOption()
     renderRecipientOption()
+    renderHistoryList()
     
 }
 
@@ -143,7 +156,6 @@ function renderHistoryList() {
         //li elementlerinin oluşturulması
         
         if(type === "transfer") {
-
             const {senderCustomer, recipientCustomer, date, amount, id } = history
             const newli = document.createElement("li")
             const newButton = document.createElement("button");
@@ -157,22 +169,18 @@ function renderHistoryList() {
             newli.appendChild(newButton)
             mainLu.appendChild(newli)
 
-        } else if (type ==="add") {
-            const { customerName} = history
+        } else if (type ==="add" || type === "delete") {
+            const { text } = history
             const newli = document.createElement("li")
             newli.className = "list-group-item"
-            newli.innerText = `${customerName} müşterisi sistemde oluşturuldu.`
+            newli.innerText = text
             mainLu.appendChild(newli)
             
-        }
-        
-
+        } 
         
     })
     
 }
-
-
 
 function transferHistoryDelete(e) {
 
@@ -191,16 +199,14 @@ function transferHistoryDelete(e) {
     if(!senderIsExists || !recipientIsExists) { //müşterilerden biri yoksa bu işlem artık gerçekleşmez
         console.log("bu işlemi yapan kullanıcı artık mevcut olmadığı için geri alınamaz")
     }else {
+        
         let deletedHistory =moneyTransferHistory.splice(index,1)
         console.log(deletedHistory)
         //silme işleminden sonra history listemizi render etmeliyiz
+        moneyTransferHistory
         renderHistoryList()
         revokeTransaction(deletedHistory) //silinen öğemizi gönderdik
-        console.log("işlem geri alındı")
     }
-
-
-    
 }
 
 function revokeTransaction(deletedHistory) {
@@ -219,7 +225,6 @@ function revokeTransaction(deletedHistory) {
 }
 
 function sendMoney() {
-    //@todo - bu fonksiyon parçalanabilir
     //ilk olarak gönderici - alıcı müşterilerine ulaşmamız gerekir
     //getAttribute ile id değerini çekiyoruz ama gelen değer string int bir değere çevirip karşılaştırma yapacağız.
     const senderId = parseInt(selectSender.selectedOptions[0].getAttribute("data-id"))
@@ -263,12 +268,51 @@ function sendMoney() {
             amount,
             date,
             type: "transfer",
-            
-            
         })
-       
+    
         renderHistoryList() //state üzerinde değişiklik oldu , render fonksiyonumuzu çalıştırırız
         
     }
     //obje içerisine html yazabilirsin! li leri öyle cagırabilirsin
+    //@todo - olumsuz durumları yap @todo - li etiketini objede yazma durumlarını dene
+
+}
+
+function filterByCustomer() {
+    
+    const targetName = filterTextInput.value
+    const filterType = selectFilter.value
+
+    if(!targetName) {
+        console.log("lütfen filtre değerini giriniz")
+        return false
+    }
+
+    let result;
+    if(filterType === "Gönderen") {
+        //text üzerinden gelen değere göre Customer Listemiz üzerinden filtreleme işlemi yapacağız
+         result = moneyTransferHistory.filter( history => history.senderCustomer?.name === targetName) 
+        //üst satırdaki senderCustomer? aslında bir kaçış yapmamızı sağlıyor.Eğer sender customer yoksa hata vermek yerine görmezden gelip döngüye devam etmemizi sağlar
+        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
+
+    } else if (filterType === "Alıcı") {
+         result = moneyTransferHistory.filter( history => history.recipientCustomer?.name === targetName) 
+    } else { //her ikiside olabilir
+         result = moneyTransferHistory.filter( history => (history.senderCustomer?.name === targetName) ||  (history.recipientCustomer?.name === targetName)) 
+    }
+    
+    //ilk olarak history dizimizi korumak için orjinal halini kopyalayım
+    copiedmoneyTransferHistory = moneyTransferHistory.slice() // dizimizi kopyaladık
+    moneyTransferHistory = result.slice() 
+    result.splice(0) //sonrasında result dizisini siliyoruz
+    
+    renderHistoryList() //tekrar render ediyoruz history listemizi
+    
+}
+
+function resetFilter() {
+    //orjinal history listemizi tekrar yükleyelim
+    moneyTransferHistory = copiedmoneyTransferHistory.slice() // dizimizi kopyaladık
+    renderHistoryList() //tekrar render ediyoruz history listemizi
+
 }
