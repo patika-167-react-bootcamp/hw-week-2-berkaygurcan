@@ -20,7 +20,7 @@ function addCustomer() {
     const customerBalance = document.getElementById("newCustomerBalance").value
 
     if(!customerName || !customerBalance) { //alanlar girilmemiş ise
-        console.log("Lütfen alanları doldurun")
+       alert("Lütfen alanları doldurun")
         return false
     }
     //değerleri customer listesine ekleyelim
@@ -116,20 +116,20 @@ function renderCustomerList() { //bu fonkisyon ile birlikte müşteri ve bakiyel
         mainLu.appendChild(newLi)
         
     })
+    
 }
 
 
 function customerDelete(e) {
     targetLi = e.path[1] //path yardımıyla butonu seçtiğimiz yerdeki li elementini aldık
-    console.log(e.path)
+    
     //customer id değerlerini li elementlerini render ederken içerisine ekledik
     const customerId = parseInt(targetLi.getAttribute("data-id"))
     //şimdi customerList içerisinden ilgili id değeri ile eşleşen kaydı silmemiz gerekli
     const index = customerList.findIndex(customer => customer.id === customerId);
     
     const deletedCustomer = customerList.splice(index,1)
-    console.log(deletedCustomer)
-
+    
     //history listemizde yazmak için durumu ekleyelim
     moneyTransferHistory.push({
         customerName: deletedCustomer.name,
@@ -197,11 +197,10 @@ function transferHistoryDelete(e) {
     const recipientIsExists = customerList.some((customer) => customer.id === recipientCustomer.id)
     
     if(!senderIsExists || !recipientIsExists) { //müşterilerden biri yoksa bu işlem artık gerçekleşmez
-        console.log("bu işlemi yapan kullanıcı artık mevcut olmadığı için geri alınamaz")
+       alert("bu işlemi yapan kullanıcı artık mevcut olmadığı için geri alınamaz")
     }else {
         
         let deletedHistory =moneyTransferHistory.splice(index,1)
-        console.log(deletedHistory)
         //silme işleminden sonra history listemizi render etmeliyiz
         moneyTransferHistory
         renderHistoryList()
@@ -212,7 +211,6 @@ function transferHistoryDelete(e) {
 function revokeTransaction(deletedHistory) {
     // iptal edilen işlem gereği bakiyeleri geri yükleyeceğimiz fonksiyon
     //silinen history objesinden kayıtlarımıza ulaşıp güncelleyelim
-    console.log(deletedHistory)
     const {senderCustomer, recipientCustomer, amount} = deletedHistory[0] // destruction yaparak objeden sadece istediğimiz değerleri aldık .
     
     //gönderen ve alan müşterilerin bakiyelerini geri yükleyelim
@@ -239,7 +237,7 @@ function sendMoney() {
 
     if(amount && senderCustomer && recipientCustomer) {//bakiye girildiyse işlemi gerçekleştirelim
         if (amount < 0) {
-            console.log("Pozitif bir bakiye giriniz")
+            alert("Pozitif bir bakiye giriniz")
             return false
         } 
         else if (amount > 0 && senderCustomer.balance - amount >= 0 ) {
@@ -248,16 +246,15 @@ function sendMoney() {
             recipientCustomer.balance += amount
 
         } else {
-            console.log("yetersiz bakiye")
+            alert("yetersiz bakiye")
             return false
         }  
     
-        console.log("Para gönderme işlemi başarılı")
         amountInput.value = ""
         addTransferHistory(senderCustomer, recipientCustomer, amount, date) //history listemizi render edecek func
         renderCustomerList() // müşteri bakiyelerini ui kısmında güncelleyelim
     } else {
-        console.log("Gönderilecek miktarı giriniz / Gönderici-Alıcı müşterileri seçiniz")
+        alert("Gönderilecek miktarı giriniz / Gönderici-Alıcı müşterileri seçiniz")
     }
 
     function addTransferHistory(senderCustomer, recipientCustomer, amount, date) {
@@ -284,7 +281,7 @@ function filterByCustomer() {
     const filterType = selectFilter.value
 
     if(!targetName) {
-        console.log("lütfen filtre değerini giriniz")
+        alert("lütfen filtre değerini giriniz")
         return false
     }
 
