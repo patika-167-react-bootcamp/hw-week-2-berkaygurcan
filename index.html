@@ -11,11 +11,11 @@
     
 </head>
 <body>
-    <div class="container mt-4">
+    <div class="container-lg m-2">
 
         <div class="row">
             <!-- Add customer card -->
-            <div class="col-4 left-div">
+            <div class="col-3 left-div">
                 <div class="card">
                     <div class="card-header">
                        Add Customer
@@ -33,7 +33,7 @@
   
             </div>
 
-            <div class="col-8 right-div">
+            <div class="col-3 right-div">
                 <!-- Money transfar card -->
                 <div class="card">
                     <div class="card-header">
@@ -77,47 +77,111 @@
                                 <label for="filterText">Müşteri Adı</label>
                                 <input type="text" id="filterText">
                                 <button class="btn btn-dark btn-sm mb-1" onclick="filterByCustomer()"> Filtrele </button>
-                                <button class="btn btn-dark btn-sm mb-1" onclick="resetFilter()"> Filtre Reset </button>
+                            </div>
+
+                            <div>
+                                <button  class="btn btn-primary btn-sm mb-1" onclick="resetFilter()"> Filtre Reset </button>
                             </div>
 
                             
                         </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-3 right-div">
+                <!-- Product card -->
+                <div class="card">
+                    <div class="card-header">
+                        Stok/Ürün Bilgisi
+                    </div>
+                    <div class="card-body">
+                        <div class="row product-div justify-content-center aling-items-center">
+                            <div class="productInputGroup">
+                             <input type="text" id="productName" placeholder="Ürün adı">
+                             <input type="number"  id="productQuantity" placeholder="ürün miktarı">
+                             <input type="number"  id="productPrice" placeholder="ürün fiyatı">
+                             <button class="btn btn-dark btn-sm mb-1" onclick="addProduct()"> Ekle </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-3 right-div">
+                <!-- Basket card -->
+                <div class="card">
+                    <div class="card-header">
+                        Sepet
+                    </div>
+                    <div class="card-body">
+                        <div class="row product-div justify-content-center aling-items-center">
+                            <div>
+                                <label for="userBasket">Sepet Sahibi</label>
+                                <select id="basket">
+                                    <option style="text-align: center;" selected>İlgili Müşteri</option>
+                                    
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row product-div justify-content-center aling-items-center">
+                            <div>
+                                <button class="btn btn-dark btn-sm mb-1" onclick="sell()"> Satış Yap </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row mt-4">
-            <div class="col-4">
+            <div class="col-3">
                 <!-- Customer Balance List-->
                 <div class="card">
                     <div class="card-header d-flex justify-content-start">
                         <h5>Customer</h5>
                         <h5 style="margin-left: 50px;">Balance</h5>
-                        
                       </div>
-                    <ul class="list-group list-group-flush" id="customersBalanceList">
-                        
+                    <ul class="list-group list-group-flush" id="customersBalanceList">     
                     </ul>
                 </div>
-
             </div>
 
-            <div class="col-8">
+            <div class="col-3">
                 <!-- History List-->
                 <div class="card">
                     <div class="card-header">
                         History
                       </div>
-                    <ul class="list-group list-group-flush" id="historyList">
-                        
+                    <ul class="list-group list-group-flush" id="historyList">    
                     </ul>
-                    
                 </div>
-                
             </div>
+
+            <div class="col-3">
+                <!-- Product List-->
+                <div class="card">
+                    <div class="card-header">
+                        Products
+                      </div>
+                    <ul class="list-group list-group-flush" id="productsList">    
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <!-- Basket List-->
+                <div class="card">
+                    <div class="card-header">
+                        Sepet
+                      </div>
+                    <ul class="list-group list-group-flush" id="basketList">    
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </div>
     
