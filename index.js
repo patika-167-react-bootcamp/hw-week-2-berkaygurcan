@@ -496,5 +496,4 @@ function renderBasketOption () {
         selectBasket.appendChild(newOptionBasket);  //tek bir elementi 2elemente atayamıyor muyuz
     })
 
-
 }
