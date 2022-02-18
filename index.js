@@ -46,18 +46,18 @@ function addCustomer() {
         type: "add",
         text: `${customerName} müşterisi sistemde oluşturuldu.`
     })
-     
     
      renderHistoryList()
      //inputların içlerini boşaltalım
      customerNameInput.value = ""
      newCustomerBalance.value = ""
-    
+
 }
 
 function renderSenderOption () {
     
     selectSender.innerHTML = ""; //içini boşalttık
+    selectSender.innerHTML = `<option selected>Lütfen Gönderici Seçiniz</option>`
     
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
@@ -74,6 +74,8 @@ function renderSenderOption () {
 function renderRecipientOption (exceptCustomerName) {
     
     selectRecipient.innerHTML = ""; //içini boşalttık
+    selectRecipient.innerHTML = `<option selected>Lütfen Alıcı Seçiniz</option>`
+
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
     customerList.forEach(function(customer) { //döngü içerisinde li elementlerimizi oluşturalım
@@ -86,6 +88,7 @@ function renderRecipientOption (exceptCustomerName) {
         
     })
 }
+
 
 //select işleminde değişiklik olunca çalışır.
 selectSender.addEventListener('change', (event) => {
