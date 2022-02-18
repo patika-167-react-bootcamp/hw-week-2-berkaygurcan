@@ -11,21 +11,21 @@
     
 </head>
 <body>
-    <div class="container-lg m-2">
+    <div class="container-lg m-3">
 
         <div class="row">
             <!-- Add customer card -->
             <div class="col-3 left-div">
                 <div class="card">
                     <div class="card-header">
-                       Add Customer
+                       Müşteri Ekle
                       </div>
                     <div class="card-body m-2">
                         <div class="row" >
                             <input type="text" id="newCustomerName" placeholder="İsim" /> 
                         </div>
                         <div class="row mt-2">
-                            <input type="number" id="newCustomerBalance" placeholder="Balance" />
+                            <input type="number" id="newCustomerBalance" placeholder="Bakiyes" />
                             <button  class="btn btn-dark btn-sm ml-3" onclick='addCustomer()'> Ekle</button>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                 <!-- Money transfar card -->
                 <div class="card">
                     <div class="card-header">
-                        Money Transfer
+                        Para Transferi
                     </div>
                     <div class="card-body">
                         <div class="row process-div justify-content-around aling-items-center">
@@ -82,6 +82,8 @@
                             <div>
                                 <button  class="btn btn-primary btn-sm mb-1" onclick="resetFilter()"> Filtre Reset </button>
                             </div>
+
+                           
 
                             
                         </div>
@@ -141,8 +143,8 @@
                 <!-- Customer Balance List-->
                 <div class="card">
                     <div class="card-header d-flex justify-content-start">
-                        <h5>Customer</h5>
-                        <h5 style="margin-left: 50px;">Balance</h5>
+                        <h5>Müşteri</h5>
+                        <h5 style="margin-left: 50px;">Bakiye</h5>
                       </div>
                     <ul class="list-group list-group-flush" id="customersBalanceList">     
                     </ul>
@@ -164,7 +166,7 @@
                 <!-- Product List-->
                 <div class="card">
                     <div class="card-header">
-                        Products
+                        Ürünler
                       </div>
                     <ul class="list-group list-group-flush" id="productsList">    
                     </ul>

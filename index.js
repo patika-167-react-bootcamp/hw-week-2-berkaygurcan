@@ -38,6 +38,7 @@ function addCustomer() {
      // optionslarımızı render edecek fonksiyonlar
      renderSenderOption() 
      renderRecipientOption()
+     renderBasketOption() //sepetteki müşteri seçme selectimiz
     
     
     moneyTransferHistory.push({
@@ -55,7 +56,7 @@ function addCustomer() {
 }
 
 function renderSenderOption () {
-    console.log(" render sender option çalıştım")
+    
     selectSender.innerHTML = ""; //içini boşalttık
     
   
@@ -136,7 +137,7 @@ function customerDelete(e) {
     const index = customerList.findIndex(customer => customer.id === customerId);
     
     const deletedCustomer = customerList.splice(index,1)
-    console.log(deletedCustomer[0].name)
+    
     //history listemizde yazmak için durumu ekleyelim
     moneyTransferHistory.push({
         customerName: deletedCustomer[0].name,
@@ -480,7 +481,7 @@ function sell() { //satış yapma işlemi
 }
 
 
-function renderSenderOption () {
+function renderBasketOption () {
     selectBasket.innerHTML = ""; //içini boşalttık
   
     //listemizdeki kullanıcıları option olarak eklememiz gerekli
